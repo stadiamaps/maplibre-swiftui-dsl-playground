@@ -33,14 +33,14 @@ public extension MapView {
     /// Example:
     /// ```swift
     ///  MapView()
-    ///     .mapViewModifier { mapView in
-    ///         mapView.showUserLocation = true
+    ///     .unsafeMapViewControllerModifier { controller in
+    ///         controller.mapView.showUserLocation = true
     ///     }
     /// ```
     ///
-    func unsafeMapViewModifier(_ modifier: @escaping (MLNMapView) -> Void) -> MapView {
+    func unsafeMapViewControllerModifier(_ modifier: @escaping (T) -> Void) -> MapView {
         var newMapView = self
-        newMapView.unsafeMapViewModifier = modifier
+        newMapView.unsafeMapViewControllerModifier = modifier
         return newMapView
     }
 
@@ -114,25 +114,19 @@ public extension MapView {
     /// - Returns: The modified MapView
     func expandClustersOnTapping(clusteredLayers: [ClusterLayer]) -> MapView {
         var newMapView = self
-
         newMapView.clusteredLayers = clusteredLayers
-
         return newMapView
     }
 
     func mapViewContentInset(_ inset: UIEdgeInsets) -> Self {
         var result = self
-
         result.mapViewContentInset = inset
-
         return result
     }
 
     func mapControls(@MapControlsBuilder _ buildControls: () -> [MapControl]) -> Self {
         var result = self
-
         result.controls = buildControls()
-
         return result
     }
 
@@ -140,5 +134,11 @@ public extension MapView {
         var result = self
         result.onViewPortChanged = onViewPortChanged
         return result
+    }
+
+    func cameraModifierDisabled(_ disabled: Bool) -> Self {
+        var view = self
+        view.cameraDisabled = disabled
+        return view
     }
 }
